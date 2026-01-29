@@ -2,30 +2,53 @@ kind: pipeline
 name: default
 
 workspace:
-  path: /home/node/app
+  path: /source
+
+volumes:
+  - name: pnpm-cache
+    host:
+      path: /root/.pnpm-cache
+
+trigger:
+  ref:
+    - refs/heads/**
 
 steps:
-  - name: npm-auth
+  - name: install
+    image: paperplanecc/baseline-node20:2025.11.30
+    volumes:
+      - name: pnpm-cache
+        path: /source/.pnpm-store
+    commands:
+      - pnpm i
+    environment:
+      HUSKY: 0
+
+  - name: check
+    image: paperplanecc/baseline-node20:2025.11.30
+    commands:
+      - pnpm run format
+      - pnpm run lint
+      - pnpm run check-types
+
+  - name: test
+    image: paperplanecc/baseline-node20:2025.11.30
+    commands:
+      - pnpm run test
+
+  - name: auth
     image: robertstettner/drone-npm-auth
     settings:
       token:
         from_secret: NPM_TOKEN
+    when:
+      branch:
+        - main
 
-  - name: build-and-publish
-    image: node:16
-    volumes:
-      - name: npmcache
-        path: /root/.npm
+  - name: publish
+    image: paperplanecc/baseline-node20:2025.11.30
     commands:
-      - npm i -g pnpm
-      - pnpm i
       - pnpm run publish
-
-volumes:
-  - name: npmcache
-    host:
-      path: /root/.npmcache
-
-trigger:
-  branch:
-    - master
+    when:
+      branch:
+        - main

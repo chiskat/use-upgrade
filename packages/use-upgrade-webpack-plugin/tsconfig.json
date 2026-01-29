@@ -1,29 +1,19 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "noEmit": false,
-    "target": "ES2016",
+    "noEmit": true,
+    "target": "ES2020",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "commonjs",
-    "declarationMap": true,
-    "sourceMap": true,
     "moduleResolution": "node",
-    "isolatedModules": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-    }
+    "isolatedModules": true
   },
-  "include": [
-    "./src"
-  ]
+  "include": ["./src"]
 }

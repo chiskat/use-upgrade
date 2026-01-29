@@ -1,21 +1,24 @@
 {
   "name": "use-upgrade-webpack-plugin",
-  "version": "0.1.6",
+  "version": "0.0.0",
   "description": "A tool to help you detect new versions of your websites.",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "jsnext:main": "es/index.js",
-  "typings": "lib/index.d.ts",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "jsnext:main": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
-    "build": "node ./scripts/build.js",
-    "prepublishOnly": "npm run build"
-  },
-  "bugs": {
-    "url": "https://github.com/jia-niang/use-upgrade/issues"
+    "build": "rollup -c",
+    "format": "prettier --list-different \"./{src,test}/**/*.ts\"",
+    "lint": "eslint \"./{src,test}/**/*.ts\"",
+    "check-types": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jia-niang/use-upgrade"
+    "url": "https://github.com/chiskat/use-upgrade",
+    "directory": "packages/use-upgrade-webpack-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/chiskat/use-upgrade/issues"
   },
   "keywords": [
     "use-upgrade",
@@ -23,7 +26,7 @@
     "webpack",
     "webpack plugin"
   ],
-  "author": "jia-niang <1@paperplane.cc>",
+  "author": "chiskat <1@paperplane.cc> (https://paperplane.cc)",
   "license": "MIT",
   "files": [
     "es/**",

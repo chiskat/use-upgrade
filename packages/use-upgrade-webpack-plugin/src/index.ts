@@ -54,9 +54,7 @@ export default class UseUpgradeWebpackPlugin {
 
     compiler.hooks.emit.tap('UseUpgradeWebpackPlugin', (compilation: any) => {
       const html = compilation.assets['index.html']
-      const updatedHtml = html
-        .source()
-        .replace(/<head>/, `<head><meta name="${this.options.skipMetaName}">`)
+      const updatedHtml = html.source().replace(/<head>/, `<head><meta name="${this.options.skipMetaName}">`)
       compilation.assets['index.html'] = {
         source: () => updatedHtml,
         size: () => updatedHtml.length,
