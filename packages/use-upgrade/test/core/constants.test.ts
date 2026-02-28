@@ -4,7 +4,6 @@ import {
   cancelEventName,
   defaultSkipMetaName,
   defaultStorageKey,
-  fetchTimeout,
   pageStateGlobalVar,
   triggerEventName,
   upgradeEventName,
@@ -18,8 +17,6 @@ describe(`检查内部常量`, () => {
     expect(upgradeEventName).toBeTypeOf('string')
     expect(triggerEventName).toBeTypeOf('string')
     expect(cancelEventName).toBeTypeOf('string')
-
-    expect(fetchTimeout).toBeTypeOf('number')
   })
 
   test(`非空`, () => {
@@ -29,7 +26,5 @@ describe(`检查内部常量`, () => {
     expect(upgradeEventName).toBeTruthy()
     expect(triggerEventName).toBeTruthy()
     expect(cancelEventName).toBeTruthy()
-
-    expect(fetchTimeout).toBeTruthy()
   })
 })

@@ -11,7 +11,7 @@ import { cleanPageState, getPageState, setPageState } from '../lib/pageState'
 import { setStorageState, getStorageState } from '../lib/storageState'
 import { verifyParams } from '../lib/verifyParams'
 import { cancelCheckUpgrade } from './cancelCheckUpgrade'
-import { cancelEventName, defaultSkipMetaName, defaultStorageKey, fetchTimeout, upgradeEventName } from './constants'
+import { cancelEventName, defaultSkipMetaName, defaultStorageKey, upgradeEventName } from './constants'
 import { TriggerCheckUpgradeOptions } from './triggerCheckUpgrade'
 
 /** 网站新版本检测 `triggerCheckUpgrade()` 的配置项 */
@@ -195,7 +195,7 @@ export async function startCheckUpgrade(
         fetchInterval > 0 &&
         (lastFetchTime || 0) + fetchInterval < now &&
         // 没有正在进行的请求 或 达到最大超时时间
-        (!pending || (lastFetchTime || 0) + fetchTimeout < now) &&
+        (!pending || (lastFetchTime || 0) + fetchInterval * 2 < now) &&
         // 网页处在前台
         document.visibilityState !== 'hidden' &&
         // 网络可用
