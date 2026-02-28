@@ -1,3 +1,4 @@
+import nodeResolve from '@rollup/plugin-node-resolve'
 import replacePlugin from '@rollup/plugin-replace'
 import terser from '@rollup/plugin-terser'
 import typescript from '@rollup/plugin-typescript'
@@ -38,7 +39,7 @@ export default defineConfig([
       { format: 'cjs', file: './dist/index.cjs.js' },
       { format: 'es', file: './dist/index.esm.js' },
     ],
-    plugins: [replace, typescript({ declaration: false })],
+    plugins: [nodeResolve(), replace, typescript({ declaration: false })],
   },
   {
     input: ['src/react/index.ts'],
@@ -66,7 +67,7 @@ export default defineConfig([
       file: './dist/index.umd.js',
       name: 'useUpgrade',
     },
-    plugins: [replace, typescript({ declaration: false }), terser()],
+    plugins: [nodeResolve(), replace, typescript({ declaration: false }), terser()],
   },
   {
     input: ['src/react/index.ts'],

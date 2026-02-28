@@ -1,3 +1,5 @@
+import { debounce } from 'lodash-es'
+
 import { setupManualEmitter } from '../lib/emitterManual'
 import { setupNetworkEmitter } from '../lib/emitterNetwork'
 import { setupRouteEmitter } from '../lib/emitterRoute'
@@ -220,17 +222,22 @@ export async function startCheckUpgrade(
     }
   }
 
-  // 依据配置项，安装触发器
-  if (!disablePageVisibleEmitter) setupVisibilityEmitter(check)
-  if (!disablePageReonlineEmitter) setupNetworkEmitter(check)
-  if (!disablePageRouteEmitter) setupRouteEmitter(check)
-  if (checkInterval > 0) setupTimerEmitter(check)
+  // 为自动触发器创建防抖版 check，避免短时间内多个触发器并发调用
+  const debouncedCheck = debounce(check, 100, { maxWait: 500 })
+
+  // 依据配置项，安装触发器（自动触发器使用防抖版）
+  if (!disablePageVisibleEmitter) setupVisibilityEmitter(debouncedCheck)
+  if (!disablePageReonlineEmitter) setupNetworkEmitter(debouncedCheck)
+  if (!disablePageRouteEmitter) setupRouteEmitter(debouncedCheck)
+  if (checkInterval > 0) setupTimerEmitter(debouncedCheck)
+  // 手动触发器保持直接调用，确保用户操作即时响应
   setupManualEmitter(check)
 
   // 安装取消监听器
   window.addEventListener(
     cancelEventName,
     () => {
+      debouncedCheck.cancel()
       cleanPageState()
     },
     { once: true }

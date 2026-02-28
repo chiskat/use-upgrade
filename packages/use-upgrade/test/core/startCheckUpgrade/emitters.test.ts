@@ -40,7 +40,8 @@ describe(`触发器功能`, () => {
     })
     document.dispatchEvent(new Event('visibilitychange'))
 
-    await new Promise(resolve => setTimeout(resolve, 100))
+    // 需要等待防抖延迟（100ms）+ 执行时间
+    await new Promise(resolve => setTimeout(resolve, 200))
 
     expect(callback).toBeCalledTimes(1)
   })
@@ -64,7 +65,8 @@ describe(`触发器功能`, () => {
     })
     document.dispatchEvent(new Event('visibilitychange'))
 
-    await new Promise(resolve => setTimeout(resolve, 100))
+    // 需要等待防抖延迟（100ms）+ 执行时间
+    await new Promise(resolve => setTimeout(resolve, 200))
 
     // 不应该触发回调
     expect(callback).toBeCalledTimes(0)
@@ -96,7 +98,8 @@ describe(`触发器功能`, () => {
     })
     window.dispatchEvent(new Event('online'))
 
-    await new Promise(resolve => setTimeout(resolve, 100))
+    // 需要等待防抖延迟（100ms）+ 执行时间
+    await new Promise(resolve => setTimeout(resolve, 200))
 
     expect(callback).toBeCalledTimes(1)
   })
@@ -120,7 +123,8 @@ describe(`触发器功能`, () => {
     })
     window.dispatchEvent(new Event('online'))
 
-    await new Promise(resolve => setTimeout(resolve, 100))
+    // 需要等待防抖延迟（100ms）+ 执行时间
+    await new Promise(resolve => setTimeout(resolve, 200))
 
     // 不应该触发回调
     expect(callback).toBeCalledTimes(0)
@@ -147,7 +151,8 @@ describe(`触发器功能`, () => {
     // 模拟路由导航
     window.history.pushState({}, '', '/test')
 
-    await new Promise(resolve => setTimeout(resolve, 100))
+    // 需要等待防抖延迟（100ms）+ 执行时间
+    await new Promise(resolve => setTimeout(resolve, 200))
 
     expect(callback).toBeCalledTimes(1)
   })
@@ -166,7 +171,8 @@ describe(`触发器功能`, () => {
     // 模拟路由导航
     window.history.pushState({}, '', '/test')
 
-    await new Promise(resolve => setTimeout(resolve, 100))
+    // 需要等待防抖延迟（100ms）+ 执行时间
+    await new Promise(resolve => setTimeout(resolve, 200))
 
     // 不应该触发回调
     expect(callback).toBeCalledTimes(0)
@@ -178,7 +184,7 @@ describe(`触发器功能`, () => {
     let tempHtml = html
     server.use(http.get(window.location.origin, () => HttpResponse.html(tempHtml)))
 
-    await startCheckUpgrade(callback, { checkInterval: 100, fetchInterval: 50 })
+    await startCheckUpgrade(callback, { checkInterval: 150, fetchInterval: 50 })
 
     // 更新 HTML 内容
     tempHtml = tempHtml.replace('main.8a21dc.js', 'main.newversion.js')
@@ -187,8 +193,8 @@ describe(`触发器功能`, () => {
     // 手动更新 storage 模拟其他 Tab 页的更新
     setStorageState({ remoteHash: newHash })
 
-    // 等待定时器触发
-    await new Promise(resolve => setTimeout(resolve, 150))
+    // 等待定时器触发（150ms）+ 防抖延迟（100ms）+ 余量
+    await new Promise(resolve => setTimeout(resolve, 500))
 
     expect(callback).toBeCalledTimes(1)
   })
@@ -204,8 +210,8 @@ describe(`触发器功能`, () => {
     // 更新 HTML 内容
     tempHtml = tempHtml.replace('main.8a21dc.js', 'main.newversion.js')
 
-    // 等待一段时间
-    await new Promise(resolve => setTimeout(resolve, 200))
+    // 等待一段时间（需要大于防抖延迟）
+    await new Promise(resolve => setTimeout(resolve, 300))
 
     // 不应该触发回调
     expect(callback).toBeCalledTimes(0)
