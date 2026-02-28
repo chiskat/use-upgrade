@@ -6,7 +6,7 @@ import { setupVisibilityEmitter } from '../lib/emitterVisibility'
 import { fetchVersionHash } from '../lib/fetchVersionHash'
 import { localCheck } from '../lib/localCheck'
 import { cleanPageState, getPageState, setPageState } from '../lib/pageState'
-import { setStorageState, getStorageState, cleanStorageState } from '../lib/storageState'
+import { setStorageState, getStorageState } from '../lib/storageState'
 import { verifyParams } from '../lib/verifyParams'
 import { cancelCheckUpgrade } from './cancelCheckUpgrade'
 import { cancelEventName, defaultSkipMetaName, defaultStorageKey, fetchTimeout, upgradeEventName } from './constants'
@@ -150,7 +150,8 @@ export async function startCheckUpgrade(
     cancelCheckUpgrade()
   }
 
-  // 初始化标记
+  // 初始化状态
+  setPageState({ storageKey: options.storageKey })
   setStorageState({ lib: 'use-upgrade@__VERSION__' })
   setPageState({ ...options, enable: true, lib: 'use-upgrade@__VERSION__', hash: getStorageState().remoteHash })
 
@@ -221,8 +222,6 @@ export async function startCheckUpgrade(
   window.addEventListener(
     cancelEventName,
     () => {
-      // 清理，cleanPageState 必须在最后
-      cleanStorageState()
       cleanPageState()
     },
     { once: true }

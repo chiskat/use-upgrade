@@ -6,7 +6,6 @@ import { afterEach, describe, expect, test, vi } from 'vitest'
 import { cancelCheckUpgrade } from '../../../src/core/cancelCheckUpgrade'
 import { startCheckUpgrade } from '../../../src/core/startCheckUpgrade'
 import { calcHash } from '../../../src/lib/calcHash'
-import { cleanPageState } from '../../../src/lib/pageState'
 import { cleanStorageState, setStorageState } from '../../../src/lib/storageState'
 import { server } from '../../server'
 
@@ -14,9 +13,8 @@ const html = readFileSync(resolve(__dirname, '../../../fixture/mock.html')).toSt
 
 describe(`触发器功能`, () => {
   afterEach(() => {
-    cancelCheckUpgrade()
     cleanStorageState()
-    cleanPageState()
+    cancelCheckUpgrade()
   })
 
   test(`页面从后台切换到前台时自动检查`, async () => {

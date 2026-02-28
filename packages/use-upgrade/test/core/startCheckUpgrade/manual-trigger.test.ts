@@ -7,7 +7,6 @@ import { cancelCheckUpgrade } from '../../../src/core/cancelCheckUpgrade'
 import { startCheckUpgrade } from '../../../src/core/startCheckUpgrade'
 import { triggerCheckUpgrade } from '../../../src/core/triggerCheckUpgrade'
 import { calcHash } from '../../../src/lib/calcHash'
-import { cleanPageState } from '../../../src/lib/pageState'
 import { cleanStorageState, setStorageState } from '../../../src/lib/storageState'
 import { server } from '../../server'
 
@@ -15,9 +14,8 @@ const html = readFileSync(resolve(__dirname, '../../../fixture/mock.html')).toSt
 
 describe(`手动触发检查`, () => {
   afterEach(() => {
-    cancelCheckUpgrade()
     cleanStorageState()
-    cleanPageState()
+    cancelCheckUpgrade()
   })
 
   test(`triggerCheckUpgrade() 仅本地检查`, async () => {

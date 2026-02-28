@@ -8,7 +8,6 @@ import { upgradeEventName } from '../../../src/core/constants'
 import { startCheckUpgrade } from '../../../src/core/startCheckUpgrade'
 import { triggerCheckUpgrade } from '../../../src/core/triggerCheckUpgrade'
 import { calcHash } from '../../../src/lib/calcHash'
-import { cleanPageState } from '../../../src/lib/pageState'
 import { cleanStorageState, setStorageState } from '../../../src/lib/storageState'
 import { server } from '../../server'
 
@@ -16,9 +15,8 @@ const html = readFileSync(resolve(__dirname, '../../../fixture/mock.html')).toSt
 
 describe(`版本检测`, () => {
   afterEach(() => {
-    cancelCheckUpgrade()
     cleanStorageState()
-    cleanPageState()
+    cancelCheckUpgrade()
   })
 
   test(`检测到新版本时触发回调`, async () => {

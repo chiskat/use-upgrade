@@ -7,7 +7,7 @@ import { cancelCheckUpgrade } from '../../../src/core/cancelCheckUpgrade'
 import { startCheckUpgrade } from '../../../src/core/startCheckUpgrade'
 import { triggerCheckUpgrade } from '../../../src/core/triggerCheckUpgrade'
 import { calcHash } from '../../../src/lib/calcHash'
-import { cleanPageState, getPageState } from '../../../src/lib/pageState'
+import { getPageState } from '../../../src/lib/pageState'
 import { cleanStorageState, getStorageState, setStorageState } from '../../../src/lib/storageState'
 import { server } from '../../server'
 
@@ -16,9 +16,8 @@ const htmlHash = calcHash(html)
 
 describe(`边界情况和错误处理`, () => {
   afterEach(() => {
-    cancelCheckUpgrade()
     cleanStorageState()
-    cleanPageState()
+    cancelCheckUpgrade()
   })
 
   test(`网络请求失败时不触发回调`, async () => {

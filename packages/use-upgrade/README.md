@@ -336,4 +336,4 @@ interface TriggerCheckUpgradeOptions {
 import { cancelCheckUpgrade } from 'use-upgrade'
 ```
 
-调用后，停止 `use-upgrade` 实例。后续可通过调用 `startCheckUpgrade()` 重新开启。
+调用后，停止**当前页面**的 `use-upgrade` 实例。后续可通过调用 `startCheckUpgrade()` 重新开启。

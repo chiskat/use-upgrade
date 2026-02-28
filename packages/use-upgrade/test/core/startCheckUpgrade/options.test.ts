@@ -6,7 +6,7 @@ import { afterEach, describe, expect, test, vi } from 'vitest'
 import { cancelCheckUpgrade } from '../../../src/core/cancelCheckUpgrade'
 import { startCheckUpgrade } from '../../../src/core/startCheckUpgrade'
 import { triggerCheckUpgrade } from '../../../src/core/triggerCheckUpgrade'
-import { cleanPageState, getPageState } from '../../../src/lib/pageState'
+import { getPageState } from '../../../src/lib/pageState'
 import { cleanStorageState, getStorageState } from '../../../src/lib/storageState'
 import { server } from '../../server'
 
@@ -14,9 +14,8 @@ const html = readFileSync(resolve(__dirname, '../../../fixture/mock.html')).toSt
 
 describe(`配置选项`, () => {
   afterEach(() => {
-    cancelCheckUpgrade()
     cleanStorageState()
-    cleanPageState()
+    cancelCheckUpgrade()
   })
 
   test(`自定义 storageKey`, async () => {

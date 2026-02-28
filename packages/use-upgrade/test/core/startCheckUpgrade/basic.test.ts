@@ -7,7 +7,7 @@ import { cancelCheckUpgrade } from '../../../src/core/cancelCheckUpgrade'
 import { startCheckUpgrade } from '../../../src/core/startCheckUpgrade'
 import { triggerCheckUpgrade } from '../../../src/core/triggerCheckUpgrade'
 import { calcHash } from '../../../src/lib/calcHash'
-import { cleanPageState, getPageState } from '../../../src/lib/pageState'
+import { getPageState } from '../../../src/lib/pageState'
 import { cleanStorageState, getStorageState } from '../../../src/lib/storageState'
 import { server } from '../../server'
 
@@ -16,9 +16,8 @@ const htmlHash = calcHash(html)
 
 describe(`基本功能`, () => {
   afterEach(() => {
-    cancelCheckUpgrade()
     cleanStorageState()
-    cleanPageState()
+    cancelCheckUpgrade()
   })
 
   test(`初次启动`, async () => {
@@ -63,9 +62,8 @@ describe(`基本功能`, () => {
 
 describe(`回调函数重载`, () => {
   afterEach(() => {
-    cancelCheckUpgrade()
     cleanStorageState()
-    cleanPageState()
+    cancelCheckUpgrade()
   })
 
   test(`只传入 callback 参数`, async () => {

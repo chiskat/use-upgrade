@@ -7,7 +7,6 @@ import { cancelCheckUpgrade } from '../../../src/core/cancelCheckUpgrade'
 import { defaultSkipMetaName } from '../../../src/core/constants'
 import { startCheckUpgrade } from '../../../src/core/startCheckUpgrade'
 import { triggerCheckUpgrade } from '../../../src/core/triggerCheckUpgrade'
-import { cleanPageState } from '../../../src/lib/pageState'
 import { cleanStorageState, getStorageState } from '../../../src/lib/storageState'
 import { server } from '../../server'
 
@@ -22,9 +21,8 @@ const html = readFileSync(resolve(__dirname, '../../../fixture/mock.html')).toSt
 
 describe(`Skip Meta 功能`, () => {
   afterEach(() => {
-    cancelCheckUpgrade()
     cleanStorageState()
-    cleanPageState()
+    cancelCheckUpgrade()
   })
 
   test(`检测到 skip meta 时不触发回调`, async () => {
