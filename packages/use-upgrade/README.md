@@ -266,7 +266,8 @@ function UseUpgradeCallback({ currentVersionHash, newVersionHash, visible }): vo
 | `disablePageReonlineEmitter` | `boolean`                                     | `false`                             | 是否禁用网站从离线切换到在线时自动检查                                                             |
 | `disablePageRouteEmitter`    | `boolean`                                     | `false`                             | 是否禁用网站路由导航时自动检查                                                                     |
 | `overrideHtmlUrl`            | `string \| (() => string \| Promise<string>)` | `window.location.origin + basename` | 覆写请求 index.html 的 url，配置此项会使 `basename`、`disableTimestamp` 配置项失效                 |
-| `overrideFetchVersionHash`   | `(fetchURL: string) => Promise<string>`       | -                                   | 覆写拉取 index.html 并计算 hash 的方法                                                             |
+| `overrideFetchHTML`          | `(fetchURL: string) => Promise<string>`       | -                                   | 覆写拉取 HTML 的方法，接收原本将要请求的 URL，返回 HTML 全文                                       |
+| `overrideCalcVersionHash`    | `(html: string) => Promise<string> \| string` | -                                   | 覆写计算版本 hash 的方法，接收 HTML 全文，返回自定义的 hash 值                                     |
 
 ## React hook `useUpgrade`
 

@@ -23,7 +23,8 @@ export function verifyParams(callback: UseUpgradeCallback, options?: CheckUpgrad
     fetchInterval,
     skipMetaName,
     overrideHtmlUrl,
-    overrideFetchVersionHash,
+    overrideFetchHTML,
+    overrideCalcVersionHash,
   } = options
 
   if (storageKey !== undefined && (typeof storageKey !== 'string' || storageKey.trim() === '')) {
@@ -54,7 +55,11 @@ export function verifyParams(callback: UseUpgradeCallback, options?: CheckUpgrad
     throw new UseUpgradeError(`useUpgrade: 参数 "options.overrideHtmlUrl" 必须为非空字符串或返回上述结果的函数。`)
   }
 
-  if (overrideFetchVersionHash !== undefined && typeof overrideFetchVersionHash !== 'function') {
-    throw new UseUpgradeError(`useUpgrade: 参数 "options.overrideFetchHash" 必须为函数。`)
+  if (overrideFetchHTML !== undefined && typeof overrideFetchHTML !== 'function') {
+    throw new UseUpgradeError(`useUpgrade: 参数 "options.overrideFetchHTML" 必须为函数。`)
+  }
+
+  if (overrideCalcVersionHash !== undefined && typeof overrideCalcVersionHash !== 'function') {
+    throw new UseUpgradeError(`useUpgrade: 参数 "options.overrideCalcVersionHash" 必须为函数。`)
   }
 }

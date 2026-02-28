@@ -176,15 +176,33 @@ describe(`配置选项`, () => {
     expect(handleRequest).toBeCalledTimes(1)
   })
 
-  test(`overrideFetchVersionHash 自定义拉取逻辑`, async () => {
+  test(`overrideFetchHTML 自定义拉取逻辑`, async () => {
     const callback = vi.fn()
-    const customHash = 'custom-hash-12345'
+    const handleFetch = vi.fn()
 
-    // 设置 server mock 返回 HTML，但 overrideFetchVersionHash 会覆盖它
     server.use(http.get(window.location.origin, () => HttpResponse.html(html)))
 
     await startCheckUpgrade(callback, {
-      overrideFetchVersionHash: async () => customHash,
+      overrideFetchHTML: async fetchURL => {
+        handleFetch()
+        const res = await fetch(fetchURL, { cache: 'no-store' })
+        return res.text()
+      },
+    })
+
+    expect(handleFetch).toHaveBeenCalledTimes(1)
+    expect(getStorageState().remoteHash).toBeTruthy()
+    expect(getPageState().hash).toBeTruthy()
+  })
+
+  test(`overrideCalcVersionHash 自定义 hash 计算`, async () => {
+    const callback = vi.fn()
+    const customHash = 'custom-hash-12345'
+
+    server.use(http.get(window.location.origin, () => HttpResponse.html(html)))
+
+    await startCheckUpgrade(callback, {
+      overrideCalcVersionHash: () => customHash,
     })
 
     expect(getStorageState().remoteHash).toBe(customHash)

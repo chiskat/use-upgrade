@@ -141,15 +141,28 @@ describe(`测试各 options 配置项`, () => {
     expect(() => verifyParams(noop, { overrideHtmlUrl: {} })).toThrow()
   })
 
-  test(`参数 overrideFetchVersionHash`, () => {
-    expect(() => verifyParams(noop, { overrideFetchVersionHash: undefined })).not.toThrow()
-    expect(() => verifyParams(noop, { overrideFetchVersionHash: () => Promise.resolve('1a2b3c') })).not.toThrow()
+  test(`参数 overrideFetchHTML`, () => {
+    expect(() => verifyParams(noop, { overrideFetchHTML: undefined })).not.toThrow()
+    expect(() => verifyParams(noop, { overrideFetchHTML: () => Promise.resolve('<html></html>') })).not.toThrow()
 
     // @ts-expect-error 测试错误参数输入
-    expect(() => verifyParams(noop, { overrideFetchVersionHash: null })).toThrow()
+    expect(() => verifyParams(noop, { overrideFetchHTML: null })).toThrow()
     // @ts-expect-error 测试错误参数输入
-    expect(() => verifyParams(noop, { overrideFetchVersionHash: {} })).toThrow()
+    expect(() => verifyParams(noop, { overrideFetchHTML: {} })).toThrow()
     // @ts-expect-error 测试错误参数输入
-    expect(() => verifyParams(noop, { overrideFetchVersionHash: [111] })).toThrow()
+    expect(() => verifyParams(noop, { overrideFetchHTML: [111] })).toThrow()
+  })
+
+  test(`参数 overrideCalcVersionHash`, () => {
+    expect(() => verifyParams(noop, { overrideCalcVersionHash: undefined })).not.toThrow()
+    expect(() => verifyParams(noop, { overrideCalcVersionHash: () => '1a2b3c' })).not.toThrow()
+    expect(() => verifyParams(noop, { overrideCalcVersionHash: () => Promise.resolve('1a2b3c') })).not.toThrow()
+
+    // @ts-expect-error 测试错误参数输入
+    expect(() => verifyParams(noop, { overrideCalcVersionHash: null })).toThrow()
+    // @ts-expect-error 测试错误参数输入
+    expect(() => verifyParams(noop, { overrideCalcVersionHash: {} })).toThrow()
+    // @ts-expect-error 测试错误参数输入
+    expect(() => verifyParams(noop, { overrideCalcVersionHash: [111] })).toThrow()
   })
 })

@@ -6,7 +6,7 @@ import { setStorageState } from './storageState'
 /** 请求拉取 index.html 提取版本 hash */
 export async function fetchVersionHash(): Promise<string | undefined> {
   setStorageState({ pending: true })
-  const { basename, disableTimestamp, overrideHtmlUrl, overrideFetchVersionHash } = getPageState()
+  const { basename, disableTimestamp, overrideHtmlUrl, overrideFetchHTML, overrideCalcVersionHash } = getPageState()
 
   let url: string
   try {
@@ -24,8 +24,8 @@ export async function fetchVersionHash(): Promise<string | undefined> {
   const fetchURL = url + timestamp
 
   const html =
-    typeof overrideFetchVersionHash === 'function'
-      ? await overrideFetchVersionHash(fetchURL).catch(() => undefined)
+    typeof overrideFetchHTML === 'function'
+      ? await overrideFetchHTML(fetchURL).catch(() => undefined)
       : await fetch(fetchURL, { cache: 'no-store' })
           .then(res => res.text())
           .catch(() => undefined)
@@ -36,7 +36,10 @@ export async function fetchVersionHash(): Promise<string | undefined> {
     return undefined
   }
 
-  const result = overrideFetchVersionHash ? html : calcHash(html)
+  const result =
+    typeof overrideCalcVersionHash === 'function'
+      ? await Promise.resolve(overrideCalcVersionHash(html)).catch(() => calcHash(html))
+      : calcHash(html)
 
   setStorageState({
     pending: false,

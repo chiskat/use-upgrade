@@ -156,26 +156,51 @@ describe(`测试远程版本拉取`, async () => {
     expect(handleRequest).toHaveBeenCalledTimes(1)
   })
 
-  test(`使用 "overrideFetchVersionHash" 覆写拉取 HTML 和计算 hash`, async () => {
-    const handleRequest = vi.fn()
-    const handleOverrideFetchVersionHash = vi.fn()
+  test(`使用 "overrideFetchHTML" 覆写拉取 HTML`, async () => {
+    const handleOverrideFetchHTML = vi.fn()
     setPageState({
       ...defaultCheckUpgradeOptions,
       disableTimestamp: true,
-      overrideFetchVersionHash(fetchURL) {
-        handleOverrideFetchVersionHash()
+      overrideFetchHTML(fetchURL) {
+        handleOverrideFetchHTML()
         expect(fetchURL).toBe(window.location.origin + defaultCheckUpgradeOptions.basename)
-        return Promise.resolve('test-overrideFetchVersionHash')
+        return Promise.resolve(html)
       },
     })
+    const hash = await fetchVersionHash()
+    expect(hash).toBe(calcHash(html))
+    expect(handleOverrideFetchHTML).toHaveBeenCalledTimes(1)
+  })
+
+  test(`使用 "overrideCalcVersionHash" 覆写计算 hash`, async () => {
+    setPageState(defaultCheckUpgradeOptions)
     server.use(
       http.get(window.location.origin, () => {
-        handleRequest()
         return HttpResponse.html(html)
       })
     )
     const hash = await fetchVersionHash()
-    expect(hash).toBe('test-overrideFetchVersionHash')
-    expect(handleOverrideFetchVersionHash).toHaveBeenCalledTimes(1)
+    // 默认使用 calcHash
+    expect(hash).toBe(calcHash(html))
+  })
+
+  test(`同时使用 "overrideFetchHTML" 和 "overrideCalcVersionHash"`, async () => {
+    const customHash = 'custom-hash-12345'
+    setPageState({
+      ...defaultCheckUpgradeOptions,
+      disableTimestamp: true,
+      overrideFetchHTML: async fetchURL => {
+        const res = await fetch(fetchURL, { cache: 'no-store' })
+        return res.text()
+      },
+      overrideCalcVersionHash: () => customHash,
+    })
+    server.use(
+      http.get(window.location.origin, () => {
+        return HttpResponse.html(html)
+      })
+    )
+    const hash = await fetchVersionHash()
+    expect(hash).toBe(customHash)
   })
 })

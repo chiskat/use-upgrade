@@ -77,9 +77,18 @@ export interface CheckUpgradeOptions {
   overrideHtmlUrl?: string | (() => string) | (() => Promise<string>)
 
   /**
-   * 覆写拉取 index.html 并计算 hash 的回调
+   * 覆写拉取 HTML 的回调，返回 HTML 全文
+   *
+   * @param fetchURL 原本将要请求的 URL
    */
-  overrideFetchVersionHash?: (fetchURL: string) => Promise<string>
+  overrideFetchHTML?: (fetchURL: string) => Promise<string>
+
+  /**
+   * 覆写计算版本 hash 的回调
+   *
+   * @param html HTML 全文
+   */
+  overrideCalcVersionHash?: (html: string) => Promise<string> | string
 }
 
 export const defaultCheckUpgradeOptions = {
