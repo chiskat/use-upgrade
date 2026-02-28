@@ -127,6 +127,12 @@ describe(`边界情况`, () => {
     expect(checkSkip(html)).toBe(false)
   })
 
+  test(`skipMetaName 设置为 null 时禁用跳过功能`, () => {
+    setPageState({ skipMetaName: null })
+    const html = '<html><head><meta name="useUpgradeSkip" /></head></html>'
+    expect(checkSkip(html)).toBe(false)
+  })
+
   test(`HTML 中包含多个 meta 标签`, () => {
     setPageState({ skipMetaName: defaultSkipMetaName })
     const html = `
