@@ -18,6 +18,6 @@ export default defineConfig([
       { format: 'es', file: './dist/index.esm.js' },
     ],
     plugins: [typescript({ declaration: false })],
-    external: ['webpack', /^node:/],
+    external: ['webpack'],
   },
 ])
