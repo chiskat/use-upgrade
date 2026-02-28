@@ -1,6 +1,6 @@
 {
   "name": "@use-upgrade/webpack-plugin",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Webpack plugin to enable skip-version detection for use-upgrade",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
