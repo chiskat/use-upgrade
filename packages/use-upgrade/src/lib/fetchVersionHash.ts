@@ -8,10 +8,17 @@ export async function fetchVersionHash(): Promise<string | undefined> {
   setStorageState({ pending: true })
   const { basename, disableTimestamp, overrideHtmlUrl, overrideFetchVersionHash } = getPageState()
 
-  const url =
-    typeof overrideHtmlUrl === 'function'
-      ? await overrideHtmlUrl()
-      : overrideHtmlUrl || window.location.origin + basename
+  let url: string
+  try {
+    url =
+      typeof overrideHtmlUrl === 'function'
+        ? await overrideHtmlUrl()
+        : overrideHtmlUrl || window.location.origin + basename
+  } catch {
+    setStorageState({ pending: false })
+
+    return undefined
+  }
 
   const timestamp = disableTimestamp || overrideHtmlUrl ? '' : `?_t=${new Date().getTime()}`
   const fetchURL = url + timestamp

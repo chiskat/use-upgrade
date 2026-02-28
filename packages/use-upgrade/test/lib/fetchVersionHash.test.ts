@@ -7,6 +7,7 @@ import { defaultCheckUpgradeOptions } from '../../src/core/startCheckUpgrade'
 import { calcHash } from '../../src/lib/calcHash'
 import { fetchVersionHash } from '../../src/lib/fetchVersionHash'
 import { cleanPageState, setPageState } from '../../src/lib/pageState'
+import { getStorageState } from '../../src/lib/storageState'
 import { server } from '../server'
 
 const html = readFileSync(resolve(__dirname, '../../fixture/mock.html')).toString()
@@ -110,6 +111,30 @@ describe(`测试 URL 相关参数`, async () => {
     await fetchVersionHash()
     expect(handleOverrodeHtmlUrl).toHaveBeenCalledTimes(1)
     expect(handleRequest).toHaveBeenCalledTimes(1)
+  })
+
+  test(`"overrideHtmlUrl" 函数抛出异常时应释放 pending 锁并返回 undefined`, async () => {
+    setPageState({
+      ...defaultCheckUpgradeOptions,
+      overrideHtmlUrl: () => {
+        throw new Error('overrideHtmlUrl error')
+      },
+    })
+    const result = await fetchVersionHash()
+    expect(result).toBeUndefined()
+    expect(getStorageState().pending).toBe(false)
+  })
+
+  test(`"overrideHtmlUrl" 异步函数 reject 时应释放 pending 锁并返回 undefined`, async () => {
+    setPageState({
+      ...defaultCheckUpgradeOptions,
+      overrideHtmlUrl: async () => {
+        throw new Error('async overrideHtmlUrl error')
+      },
+    })
+    const result = await fetchVersionHash()
+    expect(result).toBeUndefined()
+    expect(getStorageState().pending).toBe(false)
   })
 })
 
