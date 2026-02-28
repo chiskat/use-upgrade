@@ -1,0 +1,51 @@
+{
+  "name": "@use-upgrade/webpack-plugin",
+  "version": "0.0.0",
+  "description": "Webpack plugin to enable skip-version detection for use-upgrade",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "jsnext:main": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js",
+      "default": "./dist/index.cjs.js"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "rollup -c",
+    "test": "vitest run",
+    "format": "prettier --list-different .",
+    "lint": "eslint",
+    "check-types": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chiskat/use-upgrade",
+    "directory": "packages/vite-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/chiskat/use-upgrade/issues"
+  },
+  "author": "chiskat <1@paperplane.cc> (https://paperplane.cc)",
+  "license": "MIT",
+  "peerDependencies": {
+    "webpack": ">=5"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.1.2",
+    "memfs": "^4.56.10",
+    "rollup": "^4.34.8",
+    "rollup-plugin-delete": "^3.0.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "vitest": "^4.0.18",
+    "webpack": "^5.98.0"
+  },
+  "files": [
+    "dist/**"
+  ]
+}

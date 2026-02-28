@@ -2,14 +2,16 @@
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "publish": "lerna publish from-package -y",
     "prepare": "husky",
     "build": "lerna run build",
     "format": "lerna run format",
     "lint": "lerna run lint",
     "check-types": "lerna run check-types",
+    "test": "lerna run test",
     "commit": "git-cz",
-    "commitlint": "commitlint --edit"
+    "commitlint": "commitlint --edit",
+    "version": "lerna version --no-private",
+    "publish": "lerna publish from-git -y"
   },
   "workspaces": [
     "./packages/*"
@@ -19,12 +21,6 @@
     "@commitlint/config-conventional": "^19.7.1",
     "@commitlint/cz-commitlint": "^19.6.1",
     "@eslint/js": "^9.21.0",
-    "@rollup/plugin-commonjs": "^28.0.2",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.0",
-    "@rollup/plugin-replace": "^6.0.2",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.2",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "^20.5.1",
     "eslint": "^9.21.0",
@@ -33,16 +29,10 @@
     "globals": "^16.0.0",
     "husky": "^9.1.7",
     "inquirer": "^9",
-    "jsdom": "^26.0.0",
     "lerna": "^9.0.3",
     "lint-staged": "^15.4.3",
-    "msw": "^2.7.4",
     "prettier": "^3.5.2",
-    "rollup": "^4.34.8",
-    "rollup-plugin-delete": "^3.0.0",
-    "rollup-plugin-dts": "^6.1.1",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.25.0",
-    "vitest": "^4.0.18"
+    "typescript-eslint": "^8.25.0"
   }
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { upgradeEventName } from '../core/constants'
+import { localCheck } from '../lib/localCheck'
 
 /**
  * React Hook · 获取当前站点是否有新版本
@@ -8,7 +9,7 @@ import { upgradeEventName } from '../core/constants'
  * @returns 站点是否有新版本
  */
 export function useUpgrade(callback?: () => void): boolean {
-  const [hasNewVersion, setHasNewVersion] = useState(false)
+  const [hasNewVersion, setHasNewVersion] = useState(() => localCheck())
 
   useEffect(() => {
     const upgradeHandler = () => {

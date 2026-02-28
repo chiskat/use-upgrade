@@ -68,4 +68,26 @@ export default defineConfig([
     },
     plugins: [replace, typescript({ declaration: false }), terser()],
   },
+  {
+    input: ['src/react/index.ts'],
+    output: {
+      format: 'umd',
+      file: './dist/react/index.umd.js',
+      name: 'useUpgradeReact',
+      globals: { react: 'React' },
+    },
+    plugins: [replace, typescript({ declaration: false }), terser()],
+    external: ['react'],
+  },
+  {
+    input: ['src/vue/index.ts'],
+    output: {
+      format: 'umd',
+      file: './dist/vue/index.umd.js',
+      name: 'useUpgradeVue',
+      globals: { vue: 'Vue' },
+    },
+    plugins: [replace, typescript({ declaration: false }), terser()],
+    external: ['vue'],
+  },
 ])

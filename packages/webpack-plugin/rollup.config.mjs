@@ -1,14 +1,16 @@
 import typescript from '@rollup/plugin-typescript'
 import { defineConfig } from 'rollup'
-import del from 'rollup-plugin-delete'
+import deletePlugin from 'rollup-plugin-delete'
 import { dts } from 'rollup-plugin-dts'
 
 export default defineConfig([
   {
     input: 'src/index.ts',
-    output: { file: 'dist/index.d.ts', format: 'es' },
-    plugins: [del({ targets: './dist/*' }), dts()],
+    output: { file: './dist/index.d.ts', format: 'es' },
+    plugins: [deletePlugin({ targets: './dist/*' }), dts({ compilerOptions: { preserveSymlinks: false } })],
+    external: ['webpack'],
   },
+
   {
     input: ['src/index.ts'],
     output: [
@@ -16,5 +18,6 @@ export default defineConfig([
       { format: 'es', file: './dist/index.esm.js' },
     ],
     plugins: [typescript({ declaration: false })],
+    external: ['webpack', /^node:/],
   },
 ])

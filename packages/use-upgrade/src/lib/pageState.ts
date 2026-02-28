@@ -1,24 +1,37 @@
+import { pageStateGlobalVar } from '../core/constants'
 import { CheckUpgradeOptions } from '../core/startCheckUpgrade'
 
-export interface PageState extends CheckUpgradeOptions {
-  enable: boolean
-  hash: string
-  lib: string
+declare global {
+  interface Window {
+    [pageStateGlobalVar]?: PageState
+  }
 }
 
-let useUpgradeInternal: Partial<PageState> = {}
+export interface PageState extends CheckUpgradeOptions {
+  /** 是否已启用 useUpgrade */
+  enable: boolean
+
+  /** 当前 hash */
+  hash: string
+
+  /** 本页面 useUpgrade 版本号 */
+  lib: string
+
+  /** 已触发过回调的 hash */
+  triggered?: string
+}
 
 /** 设置页面变量 */
 export function setPageState(globalState: Partial<PageState>) {
-  useUpgradeInternal = { ...useUpgradeInternal, ...globalState } as PageState
+  window[pageStateGlobalVar] = { ...window[pageStateGlobalVar], ...globalState } as PageState
 }
 
 /** 提取页面变量 */
 export function getPageState() {
-  return { ...useUpgradeInternal }
+  return { ...window[pageStateGlobalVar] }
 }
 
 /** 清理页面变量 */
 export function cleanPageState() {
-  useUpgradeInternal = {}
+  window[pageStateGlobalVar] = undefined
 }

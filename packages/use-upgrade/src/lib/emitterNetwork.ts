@@ -7,6 +7,7 @@ export function setupNetworkEmitter(checkFn: () => void) {
       checkFn()
     }
   }
+
   window.addEventListener('online', pageReonlineCallback)
   window.addEventListener(
     cancelEventName,

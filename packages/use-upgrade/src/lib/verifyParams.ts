@@ -1,7 +1,7 @@
 import { UseUpgradeError } from '../core/UseUpgradeError'
-import { CheckUpgradeOptions } from '../core/startCheckUpgrade'
+import { CheckUpgradeOptions, UseUpgradeCallback } from '../core/startCheckUpgrade'
 
-export function verifyParams(callback: () => void, options?: CheckUpgradeOptions): void {
+export function verifyParams(callback: UseUpgradeCallback, options?: CheckUpgradeOptions): void {
   if (typeof callback !== 'function') {
     throw new UseUpgradeError(`useUpgrade: 参数 "callback" 必须为函数。`)
   }

@@ -7,6 +7,7 @@ export function setupVisibilityEmitter(checkFn: () => void) {
       checkFn()
     }
   }
+
   window.document.addEventListener('visibilitychange', pageVisibleCallback)
   window.addEventListener(
     cancelEventName,

@@ -1,6 +1,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 import { upgradeEventName } from '../core/constants'
+import { localCheck } from '../lib/localCheck'
 
 /**
  * Vue Hook · 获取当前站点是否有新版本
@@ -8,7 +9,7 @@ import { upgradeEventName } from '../core/constants'
  * @returns 站点是否有新版本
  */
 export function useUpgrade(callback?: () => void) {
-  const hasNewVersion = ref(false)
+  const hasNewVersion = ref(localCheck())
 
   const upgradeHandler = () => {
     hasNewVersion.value = true

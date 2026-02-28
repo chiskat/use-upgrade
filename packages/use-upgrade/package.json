@@ -1,41 +1,40 @@
 {
   "name": "use-upgrade",
   "version": "0.0.0",
-  "description": "A lib can auto detect new versions of your SPA website.",
+  "description": "A lib can auto detect new versions of your SPA website",
   "main": "dist/index.cjs.js",
-  "typings": "dist/index.d.ts",
-  "browser": "dist/index.umd.js",
+  "module": "dist/index.esm.js",
+  "jsnext:main": "dist/index.esm.js",
   "unpkg": "dist/index.umd.js",
   "jsdelivr": "dist/index.umd.js",
+  "typings": "dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.esm.js"
-      },
-      "default": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.cjs.js"
-      }
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.esm.js",
+      "require": "./dist/react/index.cjs.js",
+      "default": "./dist/react/index.cjs.js"
     },
-    "./*": {
-      "import": {
-        "types": "./dist/*/index.d.ts",
-        "default": "./dist/*/index.esm.js"
-      },
-      "default": {
-        "types": "./dist/*/index.d.ts",
-        "default": "./dist/*/index.cjs.js"
-      }
+    "./vue": {
+      "types": "./dist/vue/index.d.ts",
+      "import": "./dist/vue/index.esm.js",
+      "require": "./dist/vue/index.cjs.js",
+      "default": "./dist/vue/index.cjs.js"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js",
+      "default": "./dist/index.cjs.js"
     }
   },
   "sideEffects": false,
   "scripts": {
     "build": "rollup -c",
     "test": "vitest run",
-    "format": "prettier --list-different \"./{src,test}/**/*.ts\"",
-    "lint": "eslint \"./{src,test}/**/*.ts\"",
+    "format": "prettier --list-different .",
+    "lint": "eslint",
     "check-types": "tsc --noEmit"
   },
   "keywords": [
@@ -67,8 +66,24 @@
     }
   },
   "devDependencies": {
-    "@types/react": "^19.0.10",
-    "react": "^19.0.0",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^26.0.0",
+    "msw": "^2.7.4",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "rollup": "^4.34.8",
+    "rollup-plugin-delete": "^3.0.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "vitest": "^4.0.18",
     "vue": "^3.5.13"
   },
   "files": [

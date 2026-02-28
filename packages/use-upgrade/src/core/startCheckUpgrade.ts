@@ -1,20 +1,16 @@
+import { setupManualEmitter } from '../lib/emitterManual'
 import { setupNetworkEmitter } from '../lib/emitterNetwork'
 import { setupRouteEmitter } from '../lib/emitterRoute'
 import { setupTimerEmitter } from '../lib/emitterTimer'
 import { setupVisibilityEmitter } from '../lib/emitterVisibility'
 import { fetchVersionHash } from '../lib/fetchVersionHash'
+import { localCheck } from '../lib/localCheck'
 import { cleanPageState, getPageState, setPageState } from '../lib/pageState'
 import { setStorageState, getStorageState, cleanStorageState } from '../lib/storageState'
 import { verifyParams } from '../lib/verifyParams'
 import { cancelCheckUpgrade } from './cancelCheckUpgrade'
-import {
-  cancelEventName,
-  defaultSkipMetaName,
-  defaultStorageKey,
-  maxFetchTimeout,
-  triggerEventName,
-  upgradeEventName,
-} from './constants'
+import { cancelEventName, defaultSkipMetaName, defaultStorageKey, fetchTimeout, upgradeEventName } from './constants'
+import { TriggerCheckUpgradeOptions } from './triggerCheckUpgrade'
 
 /** 网站新版本检测 `triggerCheckUpgrade()` 的配置项 */
 export interface CheckUpgradeOptions {
@@ -76,7 +72,7 @@ export interface CheckUpgradeOptions {
    *
    * 默认 `window.location.origin + basename`
    *
-   * 配置此项后，直接覆写会使 `basename`、`disableTimestamp` 配置失效
+   * 配置此项后会使 `basename`、`disableTimestamp` 配置失效
    */
   overrideHtmlUrl?: string | (() => string) | (() => Promise<string>)
 
@@ -101,7 +97,16 @@ export const defaultCheckUpgradeOptions = {
 const noop = () => {}
 
 /** 检测到新版本时触发回调 */
-export type UseUpgradeCallback = () => void
+export type UseUpgradeCallback = (useUpgradeDetail: {
+  /** 原本的版本 hash */
+  currentVersionHash: string
+
+  /** 检测到的新版本的 hash */
+  newVersionHash: string
+
+  /** 当前页面是否可见 */
+  visible: boolean
+}) => void
 
 /**
  * 开启网站的新版本检测
@@ -140,69 +145,68 @@ export async function startCheckUpgrade(
     disablePageRouteEmitter,
   } = options
 
-  const global = getPageState()
   // 如果当前页面已注册，则先取消之
-  if (global.enable) {
+  if (getPageState().enable) {
     cancelCheckUpgrade()
   }
 
   // 初始化标记
-  setPageState({ ...options, enable: true, lib: 'use-upgrade@__VERSION__' })
   setStorageState({ lib: 'use-upgrade@__VERSION__' })
-
-  /** 比较本地 hash */
-  function checkByLocal(): boolean {
-    const { hash } = getPageState()
-    const { remoteHash, skipHash } = getStorageState()
-
-    // 无远程记录 / 无本地记录 / 被标记为 skip，均强制返回 false
-    if (!remoteHash || !hash || skipHash === remoteHash) {
-      return false
-    }
-
-    return hash !== remoteHash
-  }
+  setPageState({ ...options, enable: true, lib: 'use-upgrade@__VERSION__', hash: getStorageState().remoteHash })
 
   /** 比较本地和远程 hash */
   async function checkByRemoteAndLocal(): Promise<boolean> {
-    setStorageState({ pending: true })
     const remoteHash = await fetchVersionHash()
-    setStorageState({ pending: false, remoteHash, lastFetchTime: Date.now() })
 
-    return checkByLocal()
+    // 初次启动，拉取到远程 hash 后立刻设置本地 hash
+    if (remoteHash && !getPageState().hash) {
+      setPageState({ hash: remoteHash })
+    }
+
+    return localCheck()
   }
 
   /** 检查网站是否有更新 */
-  async function check() {
+  async function check(options?: TriggerCheckUpgradeOptions) {
     const now = Date.now()
     const { lastFetchTime, pending } = getStorageState()
 
     // 先检查本地变量
-    let hasNew = checkByLocal()
-    if (
+    let hasNew = localCheck()
+
+    // 满足特定条件，则触发请求拉取 HTML
+    const shouldFetch =
+      options?.fetch ||
       // 本地检查通过
-      !hasNew &&
-      // 间隔已小于请求间隔
-      fetchInterval > 0 &&
-      (lastFetchTime || 0) + fetchInterval < now &&
-      // 没有正在进行的请求 或 达到最大超时时间
-      (!pending || (lastFetchTime || 0) + maxFetchTimeout < now) &&
-      // 网页处在前台
-      document.visibilityState !== 'hidden' &&
-      // 网络可用
-      window.navigator.onLine !== false
-    ) {
+      (!hasNew &&
+        // 间隔已小于请求间隔
+        fetchInterval > 0 &&
+        (lastFetchTime || 0) + fetchInterval < now &&
+        // 没有正在进行的请求 或 达到最大超时时间
+        (!pending || (lastFetchTime || 0) + fetchTimeout < now) &&
+        // 网页处在前台
+        document.visibilityState !== 'hidden' &&
+        // 网络可用
+        window.navigator.onLine !== false)
+
+    if (shouldFetch) {
       hasNew = await checkByRemoteAndLocal()
     }
 
-    // 如果是首次运行，没有本地 hash，则尝试使用最后一次远程 hash
-    if (!getPageState().hash) {
-      setPageState({ hash: getStorageState().remoteHash })
-    }
+    // 有新版本，触发回调
+    const shouldCallback = hasNew && (options?.duplicate || getPageState().triggered !== getStorageState().remoteHash)
 
-    if (hasNew) {
+    if (shouldCallback) {
+      // 把此版本 hash 标记为已触发
+      setPageState({ triggered: getStorageState().remoteHash })
+      // 用于通知 React、Vue 的 Hooks
       window.dispatchEvent(new Event(upgradeEventName))
-      callback()
+
+      callback({
+        currentVersionHash: getPageState().hash!,
+        newVersionHash: getStorageState().remoteHash!,
+        visible: document.visibilityState === 'visible',
+      })
     }
   }
 
@@ -211,23 +215,12 @@ export async function startCheckUpgrade(
   if (!disablePageReonlineEmitter) setupNetworkEmitter(check)
   if (!disablePageRouteEmitter) setupRouteEmitter(check)
   if (checkInterval > 0) setupTimerEmitter(check)
-
-  // 安装手动触发监听器
-  async function globalTrigger(e: CustomEvent<{ isSendRequest: boolean }>) {
-    const isFetch = e?.detail?.isSendRequest
-    if (isFetch && !getStorageState().pending) {
-      await checkByRemoteAndLocal()
-    }
-    check()
-  }
-  window.addEventListener<any>(triggerEventName, globalTrigger)
+  setupManualEmitter(check)
 
   // 安装取消监听器
   window.addEventListener(
     cancelEventName,
     () => {
-      // 取消手动触发监听器
-      window.removeEventListener<any>(triggerEventName, globalTrigger)
       // 清理，cleanPageState 必须在最后
       cleanStorageState()
       cleanPageState()
