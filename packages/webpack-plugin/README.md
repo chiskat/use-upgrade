@@ -11,15 +11,12 @@ npm add -D @use-upgrade/webpack-plugin
 在 `webpack.config.js` 中引入插件即可：
 
 ```typescript
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UseUpgradePlugin = require('@use-upgrade/webpack-plugin')
 
 module.exports = {
-  plugins: [new HtmlWebpackPlugin(), new UseUpgradePlugin()],
+  plugins: [new UseUpgradePlugin()],
 }
 ```
-
-> 注意：此插件依赖 [`html-webpack-plugin`](https://www.npmjs.com/package/html-webpack-plugin)（>= 5），请确保项目中已安装。
 
 默认情况下，插件是**不生效**的，也就是说 `use-upgrade` 在每次网站更新时都会触发。
 
@@ -69,12 +66,17 @@ webpack build -- --use-upgrade-skip
 
 ```typescript
 const UseUpgradePlugin = require('@use-upgrade/webpack-plugin')
+
+class UseUpgradePlugin {
+  constructor(options?: UseUpgradePluginOptions): any
+}
 ```
 
-## `new UseUpgradePlugin(options?)`
+配置项 `UseUpgradePluginOptions` 解释：
 
-| 属性           | 类型      | 默认值             | 说明                                                       |
-| -------------- | --------- | ------------------ | ---------------------------------------------------------- |
-| `skip`         | `boolean` | `false`            | 是否跳过本次版本更新回调                                   |
-| `skipMetaName` | `string`  | `"useUpgradeSkip"` | 如果 `use-upgrade` 配置了此项，需和 `use-upgrade` 保持一致 |
-| `htmlFileName` | `string`  | `"index.html"`     | 需要注入的 HTML 文件名                                     |
+| 属性                                                     | 类型      | 默认值             | 说明                                                       |
+| -------------------------------------------------------- | --------- | ------------------ | ---------------------------------------------------------- |
+| `skip`                                                   | `boolean` | `false`            | 工具默认会从 Git 提交信息、环境变量                        |
+| 命令行参数等条件判断是否跳过，传入 `true` 则直接启用功能 |
+| `skipMetaName`                                           | `string`  | `"useUpgradeSkip"` | 如果 `use-upgrade` 配置了此项，需和 `use-upgrade` 保持一致 |
+| `htmlFileName`                                           | `string`  | `"index.html"`     | 需要注入的 HTML 文件名                                     |
