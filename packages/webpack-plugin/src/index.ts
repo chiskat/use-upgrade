@@ -48,7 +48,7 @@ export default class UseUpgradePlugin {
             return
           }
 
-          const metaTag = `<meta name="${this.skipMetaName}" />`
+          const metaTag = `<meta name="${this.skipMetaName}">`
           for (const name of Object.keys(assets)) {
             // 统一路径分隔符为正斜杠（兼容 Windows）
             const normalizedAssetName = name.replace(/\\/g, '/')

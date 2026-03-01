@@ -123,13 +123,13 @@ describe(`边界情况`, () => {
 
   test(`没有设置 skipMetaName 时使用 undefined`, () => {
     setPageState({})
-    const html = '<html><head><meta name="useUpgradeSkip" /></head></html>'
+    const html = '<html><head><meta name="useUpgradeSkip"></head></html>'
     expect(checkSkip(html)).toBe(false)
   })
 
   test(`skipMetaName 设置为 null 时禁用跳过功能`, () => {
     setPageState({ skipMetaName: null })
-    const html = '<html><head><meta name="useUpgradeSkip" /></head></html>'
+    const html = '<html><head><meta name="useUpgradeSkip"></head></html>'
     expect(checkSkip(html)).toBe(false)
   })
 

@@ -71,12 +71,12 @@ describe('UseUpgradePlugin', () => {
 
   it('skip 为 true 时注入默认 meta 标签', async () => {
     const html = await buildHtml([new UseUpgradePlugin({ skip: true })])
-    expect(html).toContain('<meta name="useUpgradeSkip" />')
+    expect(html).toContain('<meta name="useUpgradeSkip">')
   })
 
   it('支持自定义 skipMetaName', async () => {
     const html = await buildHtml([new UseUpgradePlugin({ skip: true, skipMetaName: 'customSkip' })])
-    expect(html).toContain('<meta name="customSkip" />')
+    expect(html).toContain('<meta name="customSkip">')
     expect(html).not.toContain('useUpgradeSkip')
   })
 
@@ -84,13 +84,13 @@ describe('UseUpgradePlugin', () => {
     const originalArgv = [...process.argv]
     vi.spyOn(process, 'argv', 'get').mockReturnValue([...originalArgv, '--use-upgrade-skip'])
     const html = await buildHtml([new UseUpgradePlugin()])
-    expect(html).toContain('<meta name="useUpgradeSkip" />')
+    expect(html).toContain('<meta name="useUpgradeSkip">')
   })
 
   it('通过环境变量 USE_UPGRADE_SKIP=true 开启 skip', async () => {
     process.env.USE_UPGRADE_SKIP = 'true'
     const html = await buildHtml([new UseUpgradePlugin()])
-    expect(html).toContain('<meta name="useUpgradeSkip" />')
+    expect(html).toContain('<meta name="useUpgradeSkip">')
   })
 
   it('环境变量不为 true 时不开启 skip', async () => {
@@ -102,7 +102,7 @@ describe('UseUpgradePlugin', () => {
   it('git commit message 包含 [use-upgrade-skip] 时开启 skip', async () => {
     vi.mocked(execSync).mockReturnValue('feat: some feature [use-upgrade-skip]')
     const html = await buildHtml([new UseUpgradePlugin()])
-    expect(html).toContain('<meta name="useUpgradeSkip" />')
+    expect(html).toContain('<meta name="useUpgradeSkip">')
   })
 
   it('git commit message 不包含 [use-upgrade-skip] 时不开启 skip', async () => {
@@ -126,7 +126,7 @@ describe('UseUpgradePlugin', () => {
 
   it('支持自定义 htmlFileName', async () => {
     const html = await buildHtml([new UseUpgradePlugin({ skip: true, htmlFileName: 'app.html' })], 'app.html')
-    expect(html).toContain('<meta name="useUpgradeSkip" />')
+    expect(html).toContain('<meta name="useUpgradeSkip">')
   })
 
   it('htmlFileName 不匹配时不注入', async () => {
