@@ -21,7 +21,7 @@ export default defineConfig({
 
 默认情况下，插件是**不生效**的，也就是说 `use-upgrade` 在每次网站更新时都会触发。
 
-开发者需要通过以下任一方式启用：
+满足以下任一条件，则会启用：
 
 ## 【推荐】通过 Git 提交信息
 
@@ -69,12 +69,15 @@ vite build -- --use-upgrade-skip
 
 ```typescript
 import useUpgradePlugin from '@use-upgrade/vite-plugin'
+
+function useUpgradePlugin(options?: UseUpgradePluginOptions): any
 ```
 
-## `useUpgradePlugin(options?)`
+配置项 `UseUpgradePluginOptions` 解释：
 
-| 属性           | 类型      | 默认值             | 说明                                                       |
-| -------------- | --------- | ------------------ | ---------------------------------------------------------- |
-| `skip`         | `boolean` | `false`            | 是否跳过本次版本更新回调                                   |
-| `skipMetaName` | `string`  | `"useUpgradeSkip"` | 如果 `use-upgrade` 配置了此项，需和 `use-upgrade` 保持一致 |
-| `htmlFileName` | `string`  | `"/index.html"`    | 需要注入的 HTML 文件名                                     |
+| 属性                                                     | 类型      | 默认值             | 说明                                                       |
+| -------------------------------------------------------- | --------- | ------------------ | ---------------------------------------------------------- |
+| `skip`                                                   | `boolean` | `false`            | 工具默认会从 Git 提交信息、环境变量                        |
+| 命令行参数等条件判断是否跳过，传入 `true` 则直接启用功能 |
+| `skipMetaName`                                           | `string`  | `"useUpgradeSkip"` | 如果 `use-upgrade` 配置了此项，需和 `use-upgrade` 保持一致 |
+| `htmlFileName`                                           | `string`  | `"/index.html"`    | 需要注入的 HTML 文件名                                     |
