@@ -1,0 +1,8 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圆 -->
+  <circle cx="256" cy="256" r="240" fill="#007AFF" />
+  <!-- 向上箭头 -->
+  <path d="M256 140 L356 260 H296 V380 H216 V260 H156 L256 140 Z" fill="white" />
+  <!-- 右上角红点 (半径从 40 扩大 50% 到 60) -->
+  <circle cx="420" cy="92" r="60" fill="#FF3B30" stroke="white" stroke-width="8" />
+</svg>

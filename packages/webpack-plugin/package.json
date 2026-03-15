@@ -33,6 +33,7 @@
   },
   "author": "chiskat <1@paperplane.cc> (https://paperplane.cc)",
   "license": "MIT",
+  "homepage": "https://use-upgrade.paperplane.cc/guide/webpack-plugin/introduction",
   "peerDependencies": {
     "webpack": ">=5"
   },

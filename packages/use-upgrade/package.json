@@ -31,6 +31,7 @@
   },
   "sideEffects": false,
   "scripts": {
+    "prepublishOnly": "node script/skill.mjs",
     "build": "rollup -c",
     "test": "vitest run",
     "format": "prettier --list-different .",
@@ -53,6 +54,7 @@
   },
   "author": "chiskat <1@paperplane.cc> (https://paperplane.cc)",
   "license": "MIT",
+  "homepage": "https://use-upgrade.paperplane.cc",
   "peerDependencies": {
     "react": ">=16",
     "vue": ">=3"
@@ -90,8 +92,7 @@
   },
   "files": [
     "dist/**",
-    "es/**",
-    "lib/**"
+    "skills/**"
   ],
   "publishConfig": {
     "access": "public",

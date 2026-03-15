@@ -16,3 +16,6 @@ yarn-error.log*
 
 **/dist
 **/.docker-deps
+
+docs/.vitepress/dist
+docs/.vitepress/cache

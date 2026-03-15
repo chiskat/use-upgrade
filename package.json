@@ -11,7 +11,10 @@
     "commit": "git-cz",
     "commitlint": "commitlint --edit",
     "version": "lerna version --no-private",
-    "publish": "lerna publish from-git -y"
+    "publish": "lerna publish from-git -y",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "workspaces": [
     "./packages/*"
@@ -33,6 +36,7 @@
     "lint-staged": "^15.4.3",
     "prettier": "^3.5.2",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.25.0"
+    "typescript-eslint": "^8.25.0",
+    "vitepress": "^1.6.4"
   }
 }
