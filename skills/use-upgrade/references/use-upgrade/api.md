@@ -1,1 +1,1 @@
-E:/PROJECT/use-upgrade/docs/guide/use-upgrade/api.md
+../../../../docs/guide/use-upgrade/api.md

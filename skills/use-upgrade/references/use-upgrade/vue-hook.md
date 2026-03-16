@@ -1,1 +1,1 @@
-E:/PROJECT/use-upgrade/docs/guide/use-upgrade/vue-hook.md
+../../../../docs/guide/use-upgrade/vue-hook.md

@@ -1,1 +1,1 @@
-E:/PROJECT/use-upgrade/docs/guide/use-upgrade/principle.md
+../../../../docs/guide/use-upgrade/principle.md

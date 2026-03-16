@@ -1,1 +1,1 @@
-E:/PROJECT/use-upgrade/docs/guide/vite-plugin/api.md
+../../../../docs/guide/vite-plugin/api.md
