@@ -1,6 +1,6 @@
 {
   "name": "use-upgrade",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A lib can auto detect new versions of your SPA website",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
