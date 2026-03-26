@@ -1,5 +1,5 @@
-import { UseUpgradeError } from '../core/UseUpgradeError'
 import { CheckUpgradeOptions, UseUpgradeCallback } from '../core/startCheckUpgrade'
+import { UseUpgradeError } from '../core/UseUpgradeError'
 
 export function verifyParams(callback: UseUpgradeCallback, options?: CheckUpgradeOptions): void {
   if (typeof callback !== 'function') {

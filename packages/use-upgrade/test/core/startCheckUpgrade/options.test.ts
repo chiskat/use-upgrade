@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
-import { http, HttpResponse } from 'msw'
 import { resolve } from 'path'
+import { http, HttpResponse } from 'msw'
 import { afterEach, describe, expect, test, vi } from 'vitest'
 
 import { cancelCheckUpgrade } from '../../../src/core/cancelCheckUpgrade'

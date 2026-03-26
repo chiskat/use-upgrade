@@ -1,7 +1,7 @@
-import { createFsFromVolume, Volume } from 'memfs'
 import { execSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
+import { createFsFromVolume, Volume } from 'memfs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import webpack from 'webpack'
 

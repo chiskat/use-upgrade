@@ -6,17 +6,6 @@
   "tabWidth": 2,
   "arrowParens": "avoid",
   "endOfLine": "lf",
-
-  "plugins": ["@trivago/prettier-plugin-sort-imports"],
-
-  "importOrder": [
-    "^@?[a-zA-Z]+.+",
-    "^@/(?!.*\\.(css|scss|less)$)",
-    "^\\.\\.?/(?!.*.(css|scss|less)$)",
-    "^.(?!(css|scss|less)$)[^.]*$",
-    "(.css|.scss|.less)$"
-  ],
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": false,
-  "importOrderGroupNamespaceSpecifiers": false
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": ["<BUILTIN_MODULES>", "<THIRD_PARTY_MODULES>", "", "^\\./", "^\\.\\./"]
 }

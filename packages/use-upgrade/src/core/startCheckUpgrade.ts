@@ -1,5 +1,8 @@
 import { debounce } from 'lodash-es'
 
+import { cancelCheckUpgrade } from './cancelCheckUpgrade'
+import { cancelEventName, defaultSkipMetaName, defaultStorageKey, upgradeEventName } from './constants'
+import { TriggerCheckUpgradeOptions } from './triggerCheckUpgrade'
 import { setupManualEmitter } from '../lib/emitterManual'
 import { setupNetworkEmitter } from '../lib/emitterNetwork'
 import { setupRouteEmitter } from '../lib/emitterRoute'
@@ -8,11 +11,8 @@ import { setupVisibilityEmitter } from '../lib/emitterVisibility'
 import { fetchVersionHash } from '../lib/fetchVersionHash'
 import { localCheck } from '../lib/localCheck'
 import { cleanPageState, getPageState, setPageState } from '../lib/pageState'
-import { setStorageState, getStorageState } from '../lib/storageState'
+import { getStorageState, setStorageState } from '../lib/storageState'
 import { verifyParams } from '../lib/verifyParams'
-import { cancelCheckUpgrade } from './cancelCheckUpgrade'
-import { cancelEventName, defaultSkipMetaName, defaultStorageKey, upgradeEventName } from './constants'
-import { TriggerCheckUpgradeOptions } from './triggerCheckUpgrade'
 
 /** 网站新版本检测 `triggerCheckUpgrade()` 的配置项 */
 export interface CheckUpgradeOptions {

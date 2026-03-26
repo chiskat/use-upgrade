@@ -1,5 +1,5 @@
-import { readdirSync, lstatSync, readlinkSync, copyFileSync, mkdirSync } from 'fs'
-import { resolve, join, dirname } from 'path'
+import { copyFileSync, lstatSync, mkdirSync, readdirSync, readlinkSync } from 'fs'
+import { dirname, join, resolve } from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
